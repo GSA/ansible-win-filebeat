@@ -1,0 +1,16 @@
+############################# Filebeat Settings ###############################
+filebeat:
+  config_dir: "{{ config_dir }}"
+
+output:
+  logstash:
+    hosts: [ "{{log_server}}:{{log_server_port}}" ]
+
+logging:
+  level: {{ logging_level }}
+  files:
+    rotateeverybytes: 10485760 #10MB 
+    path: /var/log/filebeat
+    name: win-filebeat
+    keepfiles: 7
+    permissions: 0644

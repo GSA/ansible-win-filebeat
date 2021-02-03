@@ -1,0 +1,4 @@
+config_dir: "C:/ProgramData/filebeat/conf.d"
+log_server: logs.sec.helix.gsa.gov
+log_server_port: 2078
+logging_level: error

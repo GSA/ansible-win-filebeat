@@ -1,0 +1,22 @@
+- name: Install Filebeat
+  win_chocolatey:
+    name: filebeat
+    version: "{{filebeat_version}}"
+    state: present
+
+- name: Create Config Folder
+  win_file:
+    path: "{{config_dir}}"
+    state: directory
+
+- name: Configure Filebeat
+  win_template:
+    src: filebeat.yml.j2
+    dest: "{{config_dir}}/filebeat.yml"
+  notify: filebeat restart
+
+- name: Start filebeat service
+  win_service: 
+    name: filebeat
+    start_mode: auto
+    state: started
