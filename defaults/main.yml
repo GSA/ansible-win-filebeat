@@ -1,4 +1,5 @@
-config_dir: "C:/ProgramData/filebeat/conf.d"
+version: 7.10
+config_dir: C:\ProgramData\chocolatey\lib\winlogbeat\tools\winlogbeat-{{ version }}-windows-x86_64
 log_server: logs.sec.helix.gsa.gov
 log_server_port: 2078
 logging_level: error

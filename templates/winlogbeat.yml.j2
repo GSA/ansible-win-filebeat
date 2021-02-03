@@ -1,0 +1,92 @@
+############################# Filebeat Settings ###############################
+winlogbeat.registry_file: C:/ProgramData/winlogbeat/.winlogbeat.yml
+winlogbeat.event_logs:
+ 
+  - name: System
+    ignore_older: 24h
+
+  - name: Security
+    ignore_older: 24h
+    processors:
+      - script:
+          lang: javascript
+          id: security
+          file: ${path.home}/module/security/config/winlogbeat-security.js
+
+  - name: Microsoft-Windows-Sysmon/Operational
+    ignore_older: 24h
+    processors:
+      - script:
+          lang: javascript
+          id: sysmon
+          file: ${path.home}/module/sysmon/config/winlogbeat-sysmon.js
+
+  - name: Windows PowerShell
+    ignore_older: 24h
+    processors:
+      - script:
+          lang: javascript
+          id: powershell
+          file: ${path.home}/module/powershell/config/winlogbeat-powershell.js
+
+  - name: Microsoft-Windows-PowerShell/Operational
+    ignore_older: 24h
+    processors:
+      - script:
+          lang: javascript
+          id: powershell
+          file: ${path.home}/module/powershell/config/winlogbeat-powershell.js
+
+
+  - name: Microsoft-Windows-WMI-Activity/Operational
+    ignore_older: 24h
+
+  - name: Microsoft-Windows-Diagnosis-PCW/Operational
+    ignore_older: 24h
+
+  - name: Microsoft-Windows-SystemDataArchiver/Diagnostic
+    ignore_older: 24h
+
+  - name: Forefront Identity Manager Synchronization/Operational
+    ignore_older: 24h
+
+  - name: Application
+    ignore_older: 24h
+
+  - name: Microsoft-Windows-Kernel-IO/Operational
+    ignore_older: 24h
+
+  - name: Microsoft-Windows-GroupPolicy/Operational
+    ignore_older: 24h
+
+  - name: Microsoft-Windows-NTLM/Operational
+    ignore_older: 24h
+
+  - name: Microsoft-Windows-Security-Mitigations/KernelMode
+    ignore_older: 24h
+
+  - name: Microsoft-Windows-WinRM/Operational
+    ignore_older: 24h
+
+  - name: Microsoft-Windows-MsLbfoProvider/Operational
+    ignore_older: 24h
+
+  - name: Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational
+    ignore_older: 24h
+
+  - name: Microsoft-Windows-TaskScheduler/Operational
+    ignore_older: 24h
+   
+  - name: Microsoft-Windows-TaskScheduler/Maintenance
+    ignore_older: 24h
+   
+  - name: Microsoft-Windows-Terminal Services-LocalSessionManager/Operational
+    ignore_older: 24h
+
+output.logstash:
+  hosts: [ "{{log_server}}:{{log_server_port}}" ]
+
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_cloud_metadata: ~

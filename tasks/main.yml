@@ -1,7 +1,6 @@
-- name: Install Filebeat
+- name: Install WinLogbeat
   win_chocolatey:
-    name: filebeat
-    version: "{{filebeat_version}}"
+    name: winlogbeat
     state: present
 
 - name: Create Config Folder
@@ -9,14 +8,14 @@
     path: "{{config_dir}}"
     state: directory
 
-- name: Configure Filebeat
+- name: Configure WinLogbeat
   win_template:
-    src: filebeat.yml.j2
-    dest: "{{config_dir}}/filebeat.yml"
-  notify: filebeat restart
+    src: winlogbeat.yml.j2
+    dest: "{{config_dir}}/winlogbeat.yml"
+  notify: restart winlogbeat
 
-- name: Start filebeat service
+- name: Start WinLogbeat service
   win_service: 
-    name: filebeat
+    name: winlogbeat
     start_mode: auto
     state: started
