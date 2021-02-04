@@ -1,13 +1,33 @@
+# Checks if the winlogbeat is already installed and running as a service
+- name: Check if WinLogbeat service exists
+  win_service:
+    name: winlogbeat
+  register: result
+  ignore_errors: yes
+
+# Removes already existing WinLogbeat installation if exists
+- name: Remove already existing WinLogbeat
+  win_chocolatey:
+    name: winlogbeat
+    state: absent
+    version: "{{ version }}"
+  when: result is defined and (result.state is not defined or result.name is not defined)
+  ignore_errors: yes
+
+# Installs WinLogbeat
 - name: Install WinLogbeat
   win_chocolatey:
     name: winlogbeat
     state: present
+    version: "{{ version }}"
 
+# Creates Configuration folder
 - name: Create Config Folder
   win_file:
     path: "{{config_dir}}"
     state: directory
 
+# Configures the WinLogbeat using settings in the template, and restarts the service
 - name: Configure WinLogbeat
   win_template:
     src: winlogbeat.yml.j2
@@ -15,7 +35,7 @@
   notify: restart winlogbeat
 
 - name: Start WinLogbeat service
-  win_service: 
+  win_service:
     name: winlogbeat
     start_mode: auto
     state: started
