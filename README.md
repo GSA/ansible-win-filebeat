@@ -1,4 +1,4 @@
-# ansible-winlogbeat
+# odp-ansible-winlogbeat
 This role installs, configures, and runs Winlogbeat as a service in Windows 2019 Server
 
 ## Winlogbeat Installation
@@ -56,6 +56,6 @@ This role should be executed using a playbook as given below:
     log_server: 10.0.0.8
     log_server_port: 2076
   roles:
-    - role: ansible-winlogbeat
+    - role: odp-ansible-winlogbeat
 ```
 
